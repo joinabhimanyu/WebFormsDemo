@@ -36,7 +36,7 @@
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             System.Threading.Thread.Sleep(5000);
-            label1.Text = "you clicked the server side button";
+            label1.Text = "you clicked the server side button";    
         }
 
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = false)]
@@ -62,7 +62,8 @@
             {
                 query = null;
             }
-            return prod;          
+            return prod;   
+                   
         }
     
     </script>
@@ -71,6 +72,7 @@
 
         function myfunction() {
             $("#label1").html("you clicked the client side button");
+            
         }
 
         function CallService() {
