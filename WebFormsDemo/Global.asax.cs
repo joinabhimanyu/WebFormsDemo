@@ -7,7 +7,8 @@ using System.Web.Routing;
 using System.Web.Security;
 using WebFormsDemo;
 using System.Data.Entity;
-using WebFormsDemo.Models;
+using Microsoft.AspNet.FriendlyUrls;
+//using WebFormsDemo.Models;
 
 namespace WebFormsDemo
 {
@@ -16,11 +17,11 @@ namespace WebFormsDemo
         void Application_Start(object sender, EventArgs e)
         {
             // Code that runs on application startup
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
-            AuthConfig.RegisterOpenAuth();
+            //BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //AuthConfig.RegisterOpenAuth();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            Database.SetInitializer(new ProductDatabseInitializer());
+            //Database.SetInitializer(new ProductDatabseInitializer());
 
             //Local Configurator page
             string password = "ins555";
@@ -28,6 +29,7 @@ namespace WebFormsDemo
             string constr = string.Format("User ID=ins;Password={0};Data Source=conf;max pool size={1}",password.ToString().Trim(),strLVMaxPool.ToString().Trim());
             Application["con"] = constr;
 
+            
         }
 
         void Application_End(object sender, EventArgs e)

@@ -1,0 +1,37 @@
+<StateMachineWorkflowActivity x:Class="WorkflowLibrary1.TestWF" InitialStateName="START_WORKFLOW" x:Name="TestWF" DynamicUpdateCondition="{x:Null}" CompletedStateName="{x:Null}" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow" > 
+<StateActivity x:Name="START_WORKFLOW">
+<EventDrivenActivity x:Name="ON_START_WORKFLOW_BG_ENTRY">
+<HandleExternalEventActivity x:Name="START_WORKFLOW_BG_ENTRY" EventName="BG_ENTRY" InterfaceType="{x:Type p8:IEvents}" xmlns:p8="clr-namespace:WorkFlowClassLibrary;Assembly=WorkFlowClassLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"  />
+<SetStateActivity x:Name="setStateActivity_START_WORKFLOW_BG_ENTRY" TargetStateName="BG_ENTRY" />
+</EventDrivenActivity>
+</StateActivity><StateActivity x:Name="BG_ENTRY">
+<EventDrivenActivity x:Name="ON_BG_ENTRY_BG_ENTRY_COMPLETED">
+<HandleExternalEventActivity x:Name="BG_ENTRY_BG_ENTRY_COMPLETED" EventName="BG_ENTRY_COMPLETED" InterfaceType="{x:Type p8:IEvents}" xmlns:p8="clr-namespace:WorkFlowClassLibrary;Assembly=WorkFlowClassLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"  />
+<SetStateActivity x:Name="setStateActivity_BG_ENTRY_BG_ENTRY_COMPLETED" TargetStateName="BG_ENTRY_COMPLETED" />
+</EventDrivenActivity>
+</StateActivity><StateActivity x:Name="START_CLAIM_DETAILS">
+<EventDrivenActivity x:Name="ON_START_CLAIM_DETAILS_CLAIM_DETAILS_COMPLETED">
+<HandleExternalEventActivity x:Name="START_CLAIM_DETAILS_CLAIM_DETAILS_COMPLETED" EventName="CLAIM_DETAILS_COMPLETED" InterfaceType="{x:Type p8:IEvents}" xmlns:p8="clr-namespace:WorkFlowClassLibrary;Assembly=WorkFlowClassLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"  />
+<SetStateActivity x:Name="setStateActivity_START_CLAIM_DETAILS_CLAIM_DETAILS_COMPLETED" TargetStateName="CLAIM_DETAILS_COMPLETED" />
+</EventDrivenActivity>
+</StateActivity><StateActivity x:Name="BG_ENTRY_COMPLETED">
+<EventDrivenActivity x:Name="ON_BG_ENTRY_COMPLETED_BG_ENTRY">
+<HandleExternalEventActivity x:Name="BG_ENTRY_COMPLETED_BG_ENTRY" EventName="BG_ENTRY" InterfaceType="{x:Type p8:IEvents}" xmlns:p8="clr-namespace:WorkFlowClassLibrary;Assembly=WorkFlowClassLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"  />
+<SetStateActivity x:Name="setStateActivity_BG_ENTRY_COMPLETED_BG_ENTRY" TargetStateName="BG_ENTRY" />
+</EventDrivenActivity>
+<EventDrivenActivity x:Name="ON_BG_ENTRY_COMPLETED_START_CLAIM_DETAILS">
+<HandleExternalEventActivity x:Name="BG_ENTRY_COMPLETED_START_CLAIM_DETAILS" EventName="START_CLAIM_DETAILS" InterfaceType="{x:Type p8:IEvents}" xmlns:p8="clr-namespace:WorkFlowClassLibrary;Assembly=WorkFlowClassLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"  />
+<SetStateActivity x:Name="setStateActivity_BG_ENTRY_COMPLETED_START_CLAIM_DETAILS" TargetStateName="START_CLAIM_DETAILS" />
+</EventDrivenActivity>
+</StateActivity><StateActivity x:Name="CLAIM_DETAILS_COMPLETED">
+<EventDrivenActivity x:Name="ON_CLAIM_DETAILS_COMPLETED_START_CASE_STATUS_DIARY">
+<HandleExternalEventActivity x:Name="CLAIM_DETAILS_COMPLETED_START_CASE_STATUS_DIARY" EventName="START_CASE_STATUS_DIARY" InterfaceType="{x:Type p8:IEvents}" xmlns:p8="clr-namespace:WorkFlowClassLibrary;Assembly=WorkFlowClassLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"  />
+<SetStateActivity x:Name="setStateActivity_CLAIM_DETAILS_COMPLETED_START_CASE_STATUS_DIARY" TargetStateName="START_CASE_STATUS_DIARY" />
+</EventDrivenActivity>
+</StateActivity><StateActivity x:Name="START_CASE_STATUS_DIARY">
+<EventDrivenActivity x:Name="ON_START_CASE_STATUS_DIARY_CASE_STATUS_DIARY_COMPLETED">
+<HandleExternalEventActivity x:Name="START_CASE_STATUS_DIARY_CASE_STATUS_DIARY_COMPLETED" EventName="CASE_STATUS_DIARY_COMPLETED" InterfaceType="{x:Type p8:IEvents}" xmlns:p8="clr-namespace:WorkFlowClassLibrary;Assembly=WorkFlowClassLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"  />
+<SetStateActivity x:Name="setStateActivity_START_CASE_STATUS_DIARY_CASE_STATUS_DIARY_COMPLETED" TargetStateName="CASE_STATUS_DIARY_COMPLETED" />
+</EventDrivenActivity>
+</StateActivity><StateActivity x:Name="CASE_STATUS_DIARY_COMPLETED">
+</StateActivity></StateMachineWorkflowActivity>

@@ -9,19 +9,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 
-    <title></title>
+    <title>Workflow Configuration Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="Content/alertify.core.css" />
     <link rel="stylesheet" type="text/css" href="Content/alertify.default.css" />
+    <link rel="stylesheet" type="text/css" href="bower_components/sweetalert/lib/sweet-alert.css" />
+    <link href='http://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" type="text/css" href="Content/uikit.min.css" />
+    <link rel="stylesheet" type="text/css" href="Content/uikit.gradient.min.css" />
+    <link rel="stylesheet" type="text/css" href="Content/uikit.almost-flat.min.css" />
+
     <script type="text/javascript" src="Scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="Scripts/alertify.js"></script>
     <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="Scripts/jquery.velocity.min.js"></script>
     <script type="text/javascript" src="Scripts/velocity.ui.js"></script>
+    <script type="text/javascript" src="bower_components/sweetalert/lib/sweet-alert.min.js"></script>
+    <script type="text/javascript" src="Scripts/uikit.min.js"></script>
+
     <style type="text/css">
         body {
-            background-color: hsla(225, 4%, 22%, 1);
+            background-color: white;
             background-position: center;
             background-repeat: no-repeat;
             top: 0;
@@ -38,58 +47,19 @@
             position: absolute;
         }
 
-        #page-one {
-            z-index: 10;
-            display: none;
-        }
 
         #page-two {
             z-index: 9;
             display: block;
         }
 
-        #entry-row, #result-row {
-            margin-top: 10px;
-        }
-
-        #result-row {
-            height: auto;
-        }
-
-        #txtBox, #txtNum1, #txtNum2 {
-            margin-top: 7px;
-        }
-
-        #btnSubmit, #btnAdd {
-            margin-top: 6px;
-        }
-
-        #label1 {
-            font-family: 'Open Sans Condensed', sans-serif;
-            font-size: 44px;
-            -webkit-transition: all 0.3s linear;
-            -moz-transition: all 0.3s linear;
-            -o-transition: all 0.3s linear;
-            transition: all 0.3s linear;
-        }
-
-        #addResult {
-            font-family: 'Open Sans Condensed', sans-serif;
-            font-size: 25px;
-        }
-
-            #label1:hover, #addResult:hover {
-                -o-animation: scale 1.0s ease-in;
-                -webkit-animation: scale 1.0s ease-in;
-                -moz-animation: scale 1.0s ease-in;
-                animation: scale 1.0s ease-in;
-            }
 
         @font-face {
             font-family: myFont;
-            src: url('~/Content/Sansation_Light.ttf');
-            font-weight: 100;
+            src: url('~/fonts/Sansation_Light.ttf');
         }
+
+
 
         p {
             font-weight: bold;
@@ -97,53 +67,68 @@
         }
 
         h1 {
+            /*font-family: 'Indie Flower', cursive;*/
             font-family: myFont;
             font-size: 2.5em;
+            color: white;
         }
 
         #States, #Selection {
             display: none;
         }
 
-        #lstSourceStates, #lstDestinationStates {         
-            -webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
+        #lstSourceStates, #lstDestinationStates {
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
             font-family: myFont;
-            font-weight: 400;
+            font-weight: bold;
+            font-size: 1.2em;
+            line-height: 1.5em;
+            border-color: rgba(102,175,233,0.6);
+            border-width:thin;
+            -moz-transition: all 0.3s linear;
+            -o-transition: all 0.3s linear;
+            -webkit-transition: all 0.3s linear;
+            transition: all 0.3s linear;
         }
+
+            #lstSourceStates:hover {
+                border-color: #66afe9;
+                -moz-box-shadow: inset 4px 4px 4px rgba(0,0,0,0.075),4px 4px 8px rgba(102,175,233,0.6);
+                -webkit-box-shadow: inset 4px 4px 4px rgba(0,0,0,0.075),4px 4px 8px rgba(102,175,233,0.6);
+                box-shadow: inset 4px 4px 4px rgba(0,0,0,0.075),4px 4px 8px rgba(102,175,233,0.6);
+            }
+            #lstDestinationStates:hover {
+                border-color: #66afe9;
+                -moz-box-shadow: inset 4px 4px 4px rgba(0,0,0,0.075),4px 4px 8px rgba(102,175,233,0.6);
+                -webkit-box-shadow: inset 4px 4px 4px rgba(0,0,0,0.075),4px 4px 8px rgba(102,175,233,0.6);
+                box-shadow: inset 4px 4px 4px rgba(0,0,0,0.075),4px 4px 8px rgba(102,175,233,0.6);
+            }
+
+        .page-header {
+            border-bottom: 1px solid hsla(225, 4%, 22%, 1);
+        }
+
+        .header {
+            color: white;
+        }
+
+        #SetStateTransitions .well, #SetInitStates .well {
+            -moz-transition: all 0.3s linear;
+            -o-transition: all 0.3s linear;
+            -webkit-transition: all 0.3s linear;
+            transition: all 0.3s linear;
+        }
+
+        #SetStateTransitions .well:hover, #SetInitStates .well:hover {
+            -moz-box-shadow: inset 4px 4px 4px rgba(0,0,0,0.075),4px 4px 8px rgba(102,175,233,0.6);
+            -webkit-box-shadow: inset 4px 4px 4px rgba(0,0,0,0.075),4px 4px 8px rgba(102,175,233,0.6);
+            box-shadow: inset 4px 4px 4px rgba(0,0,0,0.075),4px 4px 8px rgba(102,175,233,0.6);
+        }
+
     </style>
-    <%--<script runat="server">
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            label1.Text = "you just visited the page.";
-        }
 
-        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = false)]
-        [WebMethod]
-        public static string CallCode(string value)
-        {
-            string result = string.Format("Welcome {0}", value);
-            
-            return result;
-        }
-
-        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = false)]
-        [WebMethod]
-        public static string AddMethod(string num1, string num2)
-        {
-            double d1 = Convert.ToDouble(num1.ToString().Trim());
-            double d2 = Convert.ToDouble(num2.ToString().Trim());
-            double result = d1 + d2;
-            return result.ToString().Trim();
-        }
-
-        protected void Button1_Click(object sender, EventArgs e)
-        {
-            addResult.Text = "You just made a round trip to server, guess you didn't notice.";
-        }
-        
-    </script>--%>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -151,102 +136,74 @@
         <asp:ScriptManager ID="asm" runat="server" EnablePartialRendering="true" EnablePageMethods="true">
         </asp:ScriptManager>
 
-        <div class="container" id="page-one">
-            <div class="row" id="entry-row">
-                <div class="col-md-12">
-                    <div class="panel">
-                        <div class="panel-body">
-                            <asp:TextBox CssClass="form-control" ID="txtBox" runat="server"></asp:TextBox>
-                            <asp:Button ID="btnSubmit" CssClass="btn btn-primary" runat="server" Text="Submit" />
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="row jumbotron" id="result-row">
-                <div class="col-md-3">
-                    <asp:Label ID="label1" runat="server"></asp:Label>
-                    <p>
-                        <button class="btn btn-lg btn-primary" type="button" data-toggle="modal" data-target="#myModal">Take a Tour</button>
-                    </p>
-                </div>
-                <div class="col-md-9">
-                    <div class="row" id="add-row">
-                        <div class="panel">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <asp:Label ID="lblNum1" runat="server" Text="Enter num 1" CssClass="control-label"></asp:Label>
-                                    <asp:TextBox ID="txtNum1" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <asp:Label ID="lblNum2" runat="server" Text="Enter num 2" CssClass="control-label"></asp:Label>
-                                    <asp:TextBox ID="txtNum2" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <asp:Button ID="btnAdd" runat="server" Text="Add" CssClass="btn btn-success" />
-                            </div>
-                        </div>
-                        <div class="row" id="add-resultrow">
-                            <div class="panel">
-                                <div class="panel-body">
-                                    <asp:UpdatePanel ID="update1" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
-                                        <ContentTemplate>
-                                            <asp:Label ID="addResult" runat="server"></asp:Label>
-                                        </ContentTemplate>
-                                        <Triggers>
-                                            <asp:AsyncPostBackTrigger ControlID="changePage" EventName="Click" />
-                                        </Triggers>
-                                    </asp:UpdatePanel>
-                                    <%--<asp:Label ID="addResult" runat="server"></asp:Label>--%>
-                                    <p>
-                                        <asp:Button ID="changePage" runat="server" Text="Magic of Ajax" CssClass="btn btn-error" OnClick="Button1_Click" />
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
 
         <div class="container" id="page-two">
-            <div class="page-header">
-                <h1>Workflow Creation Wizard</h1>
-            </div>
-            <div class="row" id="Inititate">
-                <div class="col-md-3" style="margin-top:10px; margin-left:30px;">
-                    <button id="btnInitiate" class="btn btn-primary">Create New Workflow</button>
+            <%--<div class="page-header">
+                
+            </div>--%>
+            <div class="row" style="background-color: #6f5499;">
+                <div class="panel-heading">
+                    <h1>Workflow Creation Wizard</h1>
                 </div>
 
-            </div>
-            <div class="row" id="States">
-                <div class="col-md-3" style="margin-top:10px; margin-left:30px;">
-                    <asp:TextBox ID="txtWorkflowName" runat="server" CssClass="form-control"></asp:TextBox>
-                    <p style="margin-top: 10px;">
-                        <asp:Button ID="btnSelectState" runat="server" CssClass="btn btn-success" Text="Show States" OnClientClick="return CheckWorkflowName();" OnClick="btnSelectState_Click" />
-                    </p>
-                </div>
+                    <div class="row" id="Inititate">
+                        <div class="col-md-3" style="margin-top: 0px; margin-left: 30px;">
+                            <p class="bg-success">
+                                <button id="btnInitiate" class="btn btn-primary" data-toggle="modal" data-target="#workflow-name">
+                                    <span class="glyphicon glyphicon-th-large" aria-hidden="true" style="text-align: right;"> CreateWorkflow</span>
+                                </button>
+                            </p>
+                            
+                        </div>
 
+                    </div>
             </div>
+                
 
-            <div class="row" id="Selection">
+            <div class="row" id="Selection" style="background-color: #d3d3d3;">
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="false">
                     <ContentTemplate>
-                        <div class="col-md-3" style="margin-top: 10px; margin-left: 30px;">
-                            <h1 style="color: white;">Available states</h1>
-                            <asp:ListBox ID="lstSourceStates" runat="server" Height="300px" Width="300px" SelectionMode="Multiple"></asp:ListBox>
+                        <div class="row" style="margin-left: 40px; margin-top: 20px;">
+                                <div class="col-md-4">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <h2 class="header">Available states</h2>
+                                        </div>
+                                        <div class="panel-body">
+                                    
+                                    <asp:ListBox ID="lstSourceStates" CssClass="form-control" runat="server" Height="300px" Width="390px" SelectionMode="Multiple"></asp:ListBox>
+
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                                <div class="col-md-1" style="margin-left:12px;">
+                                    <p>
+                                        <asp:Button ID="InsertSelection" runat="server" CssClass="btn btn-success" Enabled="true" Text="Insert" OnClick="InsertSelection_Click" />
+                                    </p>
+                                    <p>
+                                        <asp:Button ID="DeleteSelection" runat="server" CssClass="btn btn-success" Enabled="true" Text="Delete" OnClick="DeleteSelection_Click" />
+                                    </p>
+                                </div>
+                        
+                                <div class="col-md-4">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <h2 class="header">Selected workflow states</h2>
+                                        </div>
+                                        <div class="panel-body">
+                                    
+                                    <asp:ListBox ID="lstDestinationStates" CssClass="form-control" runat="server" Height="300px" Width="390px" SelectionMode="Multiple"></asp:ListBox>
+
+                                        </div>
+                                    </div>
+                                    
+                                </div>
                         </div>
-                        <div class="col-md-2" style="margin-top: 10px;">
-                            <asp:Button ID="InsertSelection" runat="server" CssClass="btn btn-danger" Enabled="true" Text="Insert" OnClick="InsertSelection_Click" />
-                        </div>
-                        <div class="col-md-5" style="margin-top: 10px;">
-                            <div class="col-md-10">
-                                <h1 style="color: white;">Selected workflow states</h1>
-                                <asp:ListBox ID="lstDestinationStates" runat="server" Height="300px" Width="400px" SelectionMode="Multiple"></asp:ListBox>
-                            </div>
-                            <div class="col-md-2">
-                                <asp:Button ID="DeleteSelection" runat="server" CssClass="btn btn-danger" Enabled="true" Text="Delete" OnClick="DeleteSelection_Click" />
+                        <div class="row" style="margin-top: 0px;">
+                            <div class="col-md-2" style="margin-left: 300px;margin-bottom: 20px;">
+                                <asp:Button ID="btnSetStateTransition" runat="server" CssClass="btn btn-success" Text="Set State Transitions" OnClientClick="return CheckDestinationStates();" OnClick="chk_Transition_CheckedChanged" />
                             </div>
                             
                         </div>
@@ -260,158 +217,278 @@
 
             </div>
 
+            <div class="panel panel-default" id="Options-row" style="display: none; margin-top: 30px;background-color: #d3d3d3;">
+                <div class="panel-heading" style="background: #6f5499;">
+                    <h2 class="header">Workflow States</h2>
+                </div>
+                <div class="panel-body" style="margin-top: 8px;background-color: #d3d3d3;">
+                <div class="row">
+                <div class="col-md-6">
+                    <div class="row" id="SetStateTransitions">
+                <div class="col-md-7 well" style="margin-left: 43px;">
+                    <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="false">
+                        <ContentTemplate>
+                            <p>
+                                <asp:DropDownList ID="ddlDisplayLinks" runat="server" Height="25px"
+                                    Width="250px" Visible="true" AutoPostBack="True" OnSelectedIndexChanged="ddlDisplayLinks_SelectedIndexChanged">
+                                </asp:DropDownList>
+                            </p>
+                            <div style="height: 200px; overflow-y: auto;">
+                                <asp:CheckBoxList ID="chkSelectedLinks" runat="server" Height="23px"
+                                    Width="300px" Visible="true">
+                                </asp:CheckBoxList>
+                            </div>
+                            <p>
+                                <asp:Button ID="btn_SaveChanges" runat="server" CssClass="btn btn-success" Text="Save Changes" OnClientClick="return CheckSaveChanges();" OnClick="btn_SaveChanges_Click" />
+                            </p>
+                        </ContentTemplate>
+
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="btnSetStateTransition" EventName="Click" />
+                        </Triggers>
+
+                    </asp:UpdatePanel>
+                </div>
+
+            </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row" id="SetInitStates">
+                <div class="col-md-7 well" style="margin-left: -60px;">
+                    <h3>Set Initial State</h3>
+                    <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="false">
+                        <ContentTemplate>
+                            <div style="height: 200px; overflow-y: auto;">
+                                <asp:RadioButtonList ID="rdbSetInitStates" runat="server" Height="23px" Width="300px"></asp:RadioButtonList>
+                            </div>
+                            <p>
+                                <asp:Button ID="CreateFile" runat="server" CssClass="btn btn-success" Text="Create File" OnClientClick="return AllowFileCreation();" OnClick="CreateFile_Click" />
+                            </p>
+
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="CreateFile" EventName="Click" />
+                            <asp:AsyncPostBackTrigger ControlID="btn_SaveChanges" EventName="Click" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+                </div>
+
+            </div>
+                </div>
+            </div>
+            </div>
+            </div>
+            
+            
+
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+        <div class="modal fade" id="workflow-name" tabindex="-1" role="dialog" aria-labelledby="workflow-label" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="myModalLabel">The Philosophy</h4>
+                        <h4 class="modal-title" id="workflow-label">Workflow Name</h4>
                     </div>
                     <div class="modal-body">
                         <div class="well">
-                            <h3>Well this is my first attempt to merge the two worlds of HTML5 and ASP.NET Web Forms and I can say that this feels more awesome than it sounds to be. Glad you came by and had a look.</h3>
+                            <p style="margin-top: 8px;">
+                                <asp:TextBox ID="txtWorkflowName" runat="server" CssClass="form-control"></asp:TextBox>
+                            </p>
+                            <p style="margin-top: 8px;">
+                                <asp:TextBox ID="txtPath" runat="server" CssClass="form-control"></asp:TextBox>
+                            </p>
+                            <p style="margin-top: 10px;">
+                                <asp:Button ID="btnSelectState" runat="server" CssClass="btn btn-success" Text="Show States" OnClientClick="return CheckWorkflowName();" OnClick="btnSelectState_Click" />
+                            </p>
+                            
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                       
                     </div>
                 </div>
             </div>
         </div>
 
+
     </form>
 
     <script type="text/javascript">
 
-        function myfunction() {
-            alertify.alert("Magic of Ajax");
+        var countSavechanges = 0;
+
+
+        function ShowStateTransitionPanel() {
+            $("#Options-row").velocity("transition.slideUpIn", 1250);
+            $("#SetStateTransitions").velocity("transition.flipBounceYIn", 1250);
+            $("#SetInitStates").velocity("transition.flipBounceYIn", 2150);
+            
+            setTimeout('scroll()', 200);
+        }
+
+        function scroll() {
+            $('html, body').animate({
+                scrollTop: $("#Options-row").offset().top
+            }, 1000);
         }
 
         function showSelection() {
-            $("#Selection").velocity("transition.swoopIn", 1250);
+            $("#Selection").velocity("transition.slideUpIn", 1250);
         }
 
         function selectionError() {
-            alertify.error("Please select workflow states");
+            alertify.error("Please select workflow states to insert");
         }
 
         function CheckWorkflowName() {
+
             if ($("#txtWorkflowName").val() == "") {
                 $("#lstSourceStates").children().remove();
                 $("#lstDestinationStates").children().remove();
+                $("#Selection").velocity("transition.slideUpOut", 1250);
                 alertify.error("Please enter a workflow name");
                 return false;
             }
             else {
-                return true;
+                
+                var workflowName = $("#txtWorkflowName").val();
+                //var pattern = /^[a-zA-Z]([a-zA-z0-9_-]){0,}/;
+                var pattern = /[^0-9a-zA-Z\-\/]/;
+                if (pattern.test(workflowName)) {
+                    $("#lstSourceStates").children().remove();
+                    $("#lstDestinationStates").children().remove();
+                    $("#Selection").velocity("transition.slideUpOut", 1250);
+                    alertify.error("Invalid workflow name");
+                    return false;      
+                }
+                else {
+                    if ($("#txtPath").val() == "") {
+
+                        $("#lstSourceStates").children().remove();
+                        $("#lstDestinationStates").children().remove();
+                        $("#Selection").velocity("transition.slideUpOut", 1250);
+                        alertify.error("Please enter a path");
+                        return false;
+                    }
+                    else {
+                        var path = $("#txtPath").val();
+                        //var pattern = /^[a-zA-Z]([a-zA-z0-9_-]){0,}/;
+                        var pattern = /[^0-9a-zA-Z\-:\\/]/;
+                        if (pattern.test(path)) {
+                            $("#lstSourceStates").children().remove();
+                            $("#lstDestinationStates").children().remove();
+                            $("#Selection").velocity("transition.slideUpOut", 1250);
+                            alertify.error("Invalid path");
+                            return false;
+                        }
+                        else {
+
+                            $("#workflow-name").modal('toggle');
+                            return true;
+                        }
+                    }
+                    //$("#workflow-name").modal('toggle');
+                    //return true;           
+                }
             }
+
+            
+
         }
 
         function RemoveError() {
             alertify.error("Please select workflow states to delete");
         }
 
+        function CheckDestinationStates() {
+            if ($("#lstDestinationStates").children().length == 0) {
+                alertify.error("Please select states to continue");
+                return false;
+            }
+        }
+
+        function AllowFileCreation() {
+            var count = 0;
+            $("#rdbSetInitStates tr").each(function () {
+                if ($(this).find("input:radio").prop('checked')) {
+                    count = count + 1;
+                }
+            });
+            if (count > 0 & countSavechanges > 0) {
+                return true;
+            }
+            else {
+                alertify.error("No states selected for file creation");
+                return false;
+            }
+        }
+
+        function CheckSaveChanges() {
+            var count = 0;
+            $("#chkSelectedLinks tr").each(function () {
+                if ($(this).find("input:checkbox").prop('checked')) {
+                    count = count + 1;
+                }
+            });
+            if (count === 0) {
+                alertify.error('Please select a state to continue');
+                return false;
+            }
+            else {
+                countSavechanges = countSavechanges + 1;
+                return true;
+            }
+        }
+
+        function CheckFileCreate(result, fileName) {
+            if (result == "success") {
+                //sweetAlert('Congratulations!', 'File generated successfully', 'success');
+                swal({
+                    title: 'File generated successfully',
+                    text: 'Do you want to download the file ?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, download it!',
+                    cancelButtonText: "No, don't download",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function (isConfirm) {
+
+                    if (isConfirm) {
+                        swal({
+                            title: 'Congrats!',
+                            text: 'File ready for download, click to initiate',
+                            type: 'success',
+                            confirmButtonText: 'Ok',
+                            closeOnConfirm: false,
+                        },
+                        function () {
+                            window.location = "DownloadFile.ashx?param=" + fileName;     
+                        });
+                    }
+                    else {
+                        window.location.reload();
+                    }
+
+                });
+            }
+            else {
+                sweetAlert('Oops!', 'Something went wrong', 'error');
+            }
+        }
+
+        function ChangeSaved() {
+            alertify.success('Changes saved successfully');
+        }
+
         $(document).ready(function () {
 
-            $("#result-row").css("display", "none");
-            $("#add-row").css("display", "none");
-            $("#add-resultrow").css("display", "none");
             $("#txtWorkflowName").attr("placeholder", "Enter workflow name");
+            $("#txtPath").attr("placeholder","Enter path to generate the file");
+            $("#SetStateTransitions").css("display", "none");
+            $("#SetInitStates").css("display", "none");
 
-            $("#btnSubmit").click(function (e) {
-                e.preventDefault();
-                var value = $("#txtBox").val();
-                if (value == "abhi") {
-                    $.ajax({
-                        url: 'http://localhost:51092/WebForm2.aspx/CallCode',
-                        type: 'POST',
-                        data: ' { value:"' + value + '" }',
-                        dataType: 'json',
-                        contentType: 'application/json; charset=utf-8',
-                        success: function (data) {
-
-                            $("#label1").html(data.d);
-                            $("#result-row").velocity("transition.flipBounceYIn", 1250);
-                            $("#add-row").velocity("transition.flipBounceYIn", 2250);
-                            //alertify.alert("logged in");
-                            //alertify.confirm("Want a tour around here ?")
-                            //    .set('labels', { ok: 'Alright!', cancel: 'Naa!' })
-                            //    .set('reverseButtons', true)
-                            //    .set('onok', function () {
-                            //        alertify.success('Ok');
-                            //    })
-                            //    .set('oncancel', function () {
-                            //        alertify.error('Cancel');
-                            //    });
-
-                            //alertify.confirm("Want to take a tour ?",
-                            //    function () {
-                            //        $("#myModal").modal('toggle');
-                            //    },
-                            //    function () {
-                            //        alertify.success('Ok');
-                            //});
-
-                        },
-                        error: function (response) {
-                            var r = jQuery.parseJSON(response.responseText);
-                            alert("Message: " + r.Message);
-                            alert("StackTrace: " + r.StackTrace);
-                            alert("ExceptionType: " + r.ExceptionType);
-                        }
-                    });
-                }
-                else {
-                    alertify.error("You cannot go further");
-                }
-
-            });
-
-            $("#btnAdd").click(function (e) {
-                e.preventDefault();
-                var num1 = $("#txtNum1").val();
-                var num2 = $("#txtNum2").val();
-                $.ajax({
-                    url: 'http://localhost:51092/WebForm2.aspx/AddMethod',
-                    type: 'POST',
-                    data: ' { num1:"' + num1 + '", num2:"' + num2 + '" }',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (data) {
-
-                        var result = "You wanted to add the numbers, well the sum is " + data.d;
-                        $("#addResult").html(result);
-                        $("#add-resultrow").velocity("transition.flipBounceYIn", 1250);
-                        //alert(data.d);
-                    },
-                    error: function (response) {
-                        var r = jQuery.parseJSON(response.responseText);
-                        alert("Message: " + r.Message);
-                        alert("StackTrace: " + r.StackTrace);
-                        alert("ExceptionType: " + r.ExceptionType);
-                    }
-                });
-            });
-
-            $("#changePage").on('click', function () {
-                $("#page-one").velocity("transition.bounceUpOut", 1250);
-                $("#page-two").css("display", "block");
-            });
-
-            $("#page-two #page-header h1").on('click', function () {
-
-                $("#page-two").velocity("transition.bounceDownOut", 1250);
-                $("#page-one").velocity("transition.bounceUpIn", 1250);
-            });
-
-            $("#btnInitiate").on('click', function (e) {
-                e.preventDefault();
-                $("#States").velocity("transition.swoopIn", 1250);
-            });
 
         });
     </script>
