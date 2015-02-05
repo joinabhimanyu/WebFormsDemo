@@ -15,18 +15,15 @@
     <link rel="stylesheet" type="text/css" href="Content/alertify.core.css" />
     <link rel="stylesheet" type="text/css" href="Content/alertify.default.css" />
     <link rel="stylesheet" type="text/css" href="bower_components/sweetalert/lib/sweet-alert.css" />
+
     <link href='http://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css' />
+    <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,700' rel='stylesheet' type='text/css' />
+    <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css' />
+
     <link rel="stylesheet" type="text/css" href="Content/uikit.min.css" />
     <link rel="stylesheet" type="text/css" href="Content/uikit.gradient.min.css" />
     <link rel="stylesheet" type="text/css" href="Content/uikit.almost-flat.min.css" />
 
-    <%--<script type="text/javascript" src="Scripts/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="Scripts/alertify.js"></script>
-    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
-    <script type="text/javascript" src="Scripts/jquery.velocity.min.js"></script>
-    <script type="text/javascript" src="Scripts/velocity.ui.js"></script>
-    <script type="text/javascript" src="bower_components/sweetalert/lib/sweet-alert.min.js"></script>
-    <script type="text/javascript" src="Scripts/uikit.min.js"></script>--%>
 
     <style type="text/css">
         body {
@@ -45,6 +42,10 @@
             width: 100%;
             height: 100%;
             position: absolute;
+        }
+
+        #row2 {
+            display: none;
         }
 
         #page-one {
@@ -81,23 +82,26 @@
             font-family: myFont;
             src: url('~/fonts/Sansation_Light.ttf');
         }*/
-
+        #btnReadFile, #btnDisplayStateTransition, #btnModify, #btnSaveChanges, #btnShowNewStates {
+            font-family: 'Droid Serif', serif;
+            font-size: 1.4em;
+            color: white;
+        }
 
         p {
             font-weight: bold;
-            /*font-family: myFont;*/
             font-family: 'Indie Flower', cursive;
         }
 
         h1 {
-            font-family: 'Indie Flower', cursive;
-            /*font-family: myFont;*/
+            font-family: 'Droid Serif', serif;
+            /*font-family: 'Lobster', cursive;*/
             font-size: 2.5em;
             color: white;
         }
 
         h3 {
-            font-family: 'Indie Flower', cursive;
+            font-family: 'Droid Serif', serif;
             /*font-family: myFont;*/
             font-size: 2.5em;
             color: black;
@@ -107,6 +111,11 @@
             font-family: 'Open Sans Condensed', sans-serif;
             font-size: 2.1em;
             color: black;
+        }
+
+        #listTargetStates {
+            width: 200px;
+            overflow-x: auto;
         }
     </style>
 
@@ -134,19 +143,20 @@
 
             <div class="row" id="entry-row">
                 <div class="col-md-12">
-                    <div class="panel">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h1>Workflow Modification Wizard</h1>
+                        </div>
                         <div class="panel-body">
-                            <p class="well">
+
+                            <asp:Panel ID="panel_header" runat="server" CssClass="well">
                                 <asp:Label ID="lblHeader" CssClass="control-label" runat="server"></asp:Label>
-                            </p>
-                            
-                            <div class="form-group" style="margin-top: 40px;">
-                                <asp:Label ID="lblWorkflowName" runat="server" Text="Workflow Name" CssClass="control-label"></asp:Label>
+                            </asp:Panel>
+
+                            <asp:Panel ID="panel_filename" runat="server" CssClass="form-group">
                                 <asp:TextBox ID="txtWorkflowName" runat="server" CssClass="form-control"></asp:TextBox>
-                            </div>
-                            <%--<p>
-                                <asp:Button ID="btnGenerateFile" runat="server" Text="Generate File" CssClass="btn btn-success" />
-                            </p>--%>
+                            </asp:Panel>
+
                             <ul class="list-inline">
                                 <li>
                                     <asp:Button ID="btnReadFile" runat="server" CssClass="btn btn-primary" Text="Read File" OnClick="btnShowResult_Click" />
@@ -155,7 +165,7 @@
                                     <asp:Button ID="btnDisplayStateTransition" runat="server" CssClass="btn btn-primary" Text="Display in State Transition Pattern" OnClick="btnDisplayStateTransition_Click" />
                                 </li>
                             </ul>
-                           
+
                         </div>
                     </div>
 
@@ -172,6 +182,8 @@
                                     <asp:GridView ID="grdStates" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false" ItemType="WebFormsDemo.StateActivity">
                                         <Columns>
 
+                                            <asp:CheckBoxField HeaderText="Is Initial" DataField="InitialState" />
+
                                             <asp:TemplateField HeaderText="State Activity Name">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblStateName" runat="server" Text='<%# Eval("state_name") %>'></asp:Label>
@@ -183,11 +195,11 @@
 
                                                     <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false" ItemType="WebFormsDemo.EventDrivenActivity" DataSource='<%# Eval("event_driven") %>'>
                                                         <Columns>
-                                                            <asp:TemplateField HeaderText="Event Name">
+                                                            <%--<asp:TemplateField HeaderText="Event Name">
                                                                 <ItemTemplate>
                                                                     <asp:Label ID="lblEventName" runat="server" Text='<%# Eval("eventname") %>'></asp:Label>
                                                                 </ItemTemplate>
-                                                            </asp:TemplateField>
+                                                            </asp:TemplateField>--%>
 
                                                             <asp:TemplateField HeaderText="HandleExternal Event Name">
                                                                 <ItemTemplate>
@@ -212,6 +224,7 @@
                                 </ContentTemplate>
                                 <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="btnReadFile" EventName="Click" />
+                                    <asp:AsyncPostBackTrigger ControlID="lnkCloseModify" EventName="Click" />
                                 </Triggers>
                             </asp:UpdatePanel>
                         </div>
@@ -254,16 +267,19 @@
 
                             <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="false">
                                 <ContentTemplate>
-                                    <asp:GridView ID="grdStateTransition" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false" ItemType="WebFormsDemo.DisplayState">
+                                    <asp:GridView ID="grdStateTransition" runat="server" CssClass="table table-bordered table-responsive" AutoGenerateColumns="false" ItemType="WebFormsDemo.DisplayState">
                                         <Columns>
-                                            <asp:TemplateField HeaderText="State Name">
+
+                                            <asp:CheckBoxField HeaderText="Is Initial" DataField="InitialState" />
+
+                                            <asp:TemplateField HeaderText="State Name" ControlStyle-Width="100%">
                                                 <ItemTemplate>
                                                     <asp:Label runat="server" ID="lblDisplayName" Text='<%# Eval("disp_state_name") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Target State Name">
                                                 <ItemTemplate>
-                                                    <asp:ListBox ID="listTargetStates" runat="server" CssClass="form-control" DataSource='<%# Eval("target_states") %>' Enabled="False"></asp:ListBox>
+                                                    <asp:ListBox ID="listTargetStates" runat="server" CssClass="form-control" DataSource='<%# Eval("targetstate_displayname") %>' Enabled="False"></asp:ListBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
@@ -276,20 +292,182 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
+                        <asp:Button ID="btnModify" runat="server" CssClass="btn btn-primary" Text="Modify Transition" OnClick="btnModify_Click" />
                     </div>
                 </div>
             </div>
         </div>
 
 
+
+        <div class="modal fade" id="modalModify" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <%--<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>--%>
+                        
+                        <asp:LinkButton ID="lnkCloseModify" runat="server" CssClass="close" OnClientClick="return ToggleModifyModal();" OnClick="lnkCloseModify_Click">
+                            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                        </asp:LinkButton>
+
+                        <h4 class="modal-title" id="H2">State Modification</h4>
+                    </div>
+                    <div class="modal-body">
+                        <asp:Panel CssClass="row" ID="row1" runat="server">
+                            <div class="well">
+
+                            <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="false">
+                                <ContentTemplate>
+                                    <div class="row well">
+                                        <asp:GridView ID="grdStateModification" runat="server" CssClass="table table-bordered table-responsive" AutoGenerateColumns="false" ItemType="WebFormsDemo.DisplayState">
+                                            <Columns>
+
+                                                <asp:TemplateField HeaderText="Is Initial State">
+                                                    <ItemTemplate>
+                                                        <asp:RadioButton ID="chk" runat="server" Checked='<%# Eval("InitialState") %>' AutoPostBack="true" OnCheckedChanged="chk_CheckedChanged" />
+                                                    </ItemTemplate>
+
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="State Name" ControlStyle-Width="100%">
+                                                    <ItemTemplate>
+                                                        <asp:Label runat="server" ID="lblDisplayName" Text='<%# Eval("disp_state_name") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Target States">
+                                                    <ItemTemplate>
+                                                        <asp:CheckBoxList ID="chkSelectedLinks" runat="server" AutoPostBack="true" Height="23px" Width="300px" Visible="true" DataSource='<%# Eval("all_states") %>' OnSelectedIndexChanged="chkSelectedLinks_SelectedIndexChanged">
+                                                        </asp:CheckBoxList>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                            </Columns>
+                                        </asp:GridView>
+                                    </div>
+
+                                </ContentTemplate>
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="btnModify" EventName="Click" />
+                                    <asp:AsyncPostBackTrigger ControlID="btnSaveChanges" EventName="Click" />
+                                </Triggers>
+                            </asp:UpdatePanel>
+                        </div>
+                        </asp:Panel>
+
+                        <asp:Panel runat="server" CssClass="row" ID="row2">
+                            <div class="well">
+                                <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="false">
+                    <ContentTemplate>
+                        <div class="row">
+                                <div class="col-md-4">
+                                    <div class="panel panel-primary" style="width: 350px;">
+                                        <div class="panel-heading">
+                                            <h2 class="header">Available states</h2>
+                                        </div>
+                                        <div class="panel-body">
+                                    
+                                    <asp:ListBox ID="lstSourceStates" CssClass="form-control" runat="server" Height="200px" Width="200px" SelectionMode="Multiple"></asp:ListBox>
+
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                                <div class="col-md-1" style="margin-left:12px;">
+                                    <p>
+                                        <asp:Button ID="InsertSelection" runat="server" CssClass="btn btn-success" Enabled="true" Text="Insert" OnClick="InsertSelection_Click" />
+                                    </p>
+                                    <p>
+                                        <asp:Button ID="DeleteSelection" runat="server" CssClass="btn btn-warning" Enabled="true" Text="Delete" OnClick="DeleteSelection_Click" />
+                                    </p>
+                                </div>
+                        
+                                <div class="col-md-4">
+                                    <div class="panel panel-primary" style="width: 350px;">
+                                        <div class="panel-heading">
+                                            <h2 class="header">Selected workflow states</h2>
+                                        </div>
+                                        <div class="panel-body">
+                                    
+                                    <asp:ListBox ID="lstDestinationStates" CssClass="form-control" runat="server" Height="200px" Width="200px" SelectionMode="Multiple"></asp:ListBox>
+
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                        </div>
+                    </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="btnModify" EventName="Click" />
+                        <asp:AsyncPostBackTrigger ControlID="btnSaveChanges" EventName="Click" />
+                        <asp:AsyncPostBackTrigger ControlID="InsertSelection" EventName="Click" />
+                        <asp:AsyncPostBackTrigger ControlID="DeleteSelection" EventName="Click" />
+                    </Triggers>
+                </asp:UpdatePanel>
+                            </div>
+                        </asp:Panel>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row well">
+                            <ul class="list-inline">
+                                <li>
+                                    <asp:Button ID="btnSaveChanges" runat="server" CssClass="btn btn-primary" Text="Save Changes" OnClick="btnSaveChanges_Click" />
+                                </li>
+                                <li>
+                                    <button id="btnShowNewStates" class="btn btn-primary">Add States</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     </form>
 
     <script type="text/javascript">
 
+        function selectionError() {
+            alertify.error("Please select workflow states to insert");
+        }
+
+        function HideAllStates() {
+            $("#row2").velocity("transition.slideDownOut", 500);
+            $("#row1").velocity("transition.slideUpIn", 1350);
+        }
+
+        function RemoveError() {
+            alertify.error("Please select workflow states to delete");
+        }
+
         function ToggleModal() {
             $("#modalStates").modal('toggle');
+        }
+
+        function ToggleModifyModal() {
+            $("#modalModify").modal('toggle');
+            return true;
+        }
+
+        function SaveConfirmation(result) {
+            if (result == "success") {
+                alertify.success('Changes saved successfully');
+            }
+            else {
+                alertify.error(result);
+            }
+        }
+
+        function DisplayStateModification(result) {
+            if (result == "success") {
+                $("#modalStates").modal('toggle');
+                $("#modalModify").modal('toggle');
+            }
         }
 
         function ShowResultRow(result) {
@@ -315,6 +493,13 @@
             $("#result-row").css("display", "none");
 
             $("#txtWorkflowName").attr("placeholder", "Enter the file path if different from default path");
+
+            $("#btnShowNewStates").click(function (e) {
+                e.preventDefault();
+                $("#row1").velocity("transition.slideDownOut", 500);
+                $("#row2").velocity("transition.slideUpIn", 1350);
+                
+            });
 
             //$("#btnSubmit").click(function (e) {
             //    e.preventDefault();
